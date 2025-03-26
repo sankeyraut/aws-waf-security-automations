@@ -186,11 +186,12 @@ class WAFLIBv2(object):
                 LockToken=lock_token
             )
 
-            new_ip_set = self.get_ip_set(log, scope, name, ip_set_id)
+            # Commented out to reduce API calls and avoid throttling
+            # new_ip_set = self.get_ip_set(log, scope, name, ip_set_id)
 
             log.debug("[waflib:update_ip_set] update ip set response:\n{}".format(response))
             log.info("[waflib:update_ip_set] End")
-            return new_ip_set
+            return response
         except Exception as e:
             log.error(e)
             log.error("Failed to update IPSet: %s", str(ip_set_id))

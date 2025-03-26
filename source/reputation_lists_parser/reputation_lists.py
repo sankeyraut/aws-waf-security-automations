@@ -94,20 +94,22 @@ def populate_ipsets(log, scope, ipset_name_v4, ipset_name_v6, ipset_arn_v4, ipse
         except Exception as e:
             log.error(e)
 
-    waflib.update_ip_set(log, scope, ipset_name_v4, ipset_arn_v4, addresses_v4)
-    ipset = waflib.get_ip_set(log, scope, ipset_name_v4, ipset_arn_v4)
-
-    log.info(ipset)
-    log.info("There are %d IP addresses in IPSet %s", len(ipset["IPSet"]["Addresses"]), ipset_name_v4)
+    response_v4 = waflib.update_ip_set(log, scope, ipset_name_v4, ipset_arn_v4, addresses_v4)
+    # Commented out to reduce API calls and avoid throttling
+    # ipset = waflib.get_ip_set(log, scope, ipset_name_v4, ipset_arn_v4)
+    
+    log.info("Updated IPSet %s with %d IP addresses", ipset_name_v4, len(addresses_v4))
+    log.debug("Update response: %s", response_v4)
 
     # Sleep for a few seconds to mitigate AWS WAF Update API call throttling issue
     sleep(delay_between_updates)
 
-    waflib.update_ip_set(log, scope, ipset_name_v6, ipset_arn_v6, addresses_v6)
-    ipset = waflib.get_ip_set(log, scope, ipset_name_v6, ipset_arn_v6)
-
-    log.info(ipset)
-    log.info("There are %d IP addresses in IPSet %s", len(ipset["IPSet"]["Addresses"]), ipset_name_v6)
+    response_v6 = waflib.update_ip_set(log, scope, ipset_name_v6, ipset_arn_v6, addresses_v6)
+    # Commented out to reduce API calls and avoid throttling
+    # ipset = waflib.get_ip_set(log, scope, ipset_name_v6, ipset_arn_v6)
+    
+    log.info("Updated IPSet %s with %d IP addresses", ipset_name_v6, len(addresses_v6))
+    log.debug("Update response: %s", response_v6)
 
 
 def initialize_usage_data():
